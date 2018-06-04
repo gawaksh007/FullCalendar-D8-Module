@@ -1,0 +1,5 @@
+name: 'JSCal'
+type: module
+description: 'JS Calendar'
+core: 8.x
+package: 'Custom'

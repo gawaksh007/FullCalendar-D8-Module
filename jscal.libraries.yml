@@ -1,0 +1,12 @@
+js-bodyform:
+  version:
+  js:
+   js/jquery.min.js: {}
+   js/moment.min.js: {}
+   js/fullcalendar.js: {}
+   js/temp.js: {}
+
+  css:
+   css/fullcalendar.css: {}
+
+  

@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * @file
+ * Contains jscal.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+
+//Implements Drupal hook_preprocess_page()
+
+function jscal_preprocess_page(array &$page) {
+  $config = \Drupal::config('jscal.settings');
+  $current_user = User::load(\Drupal::currentUser()->id());
+  $configRoles = $config->get('roles');
+  $checkRole = FALSE;
+  foreach ($configRoles as $key => $role) {
+    if ($role !== 0) {
+      $checkRole = in_array($role, $current_user->getRoles());
+    }
+  }
+// $status = 0;
+ if ($checkRole) {
+  // $status = 1;
+  $page['#attached']['library'][] = 'jscal/jscal-script';
+ // $page['#attached']['library'][] = 'jscal/jscal-css';
+
+  $cal_title = $config->get('cal_title');
+  $cal_description = $config->get('cal_description')['value'];
+  $cal_start_date = $config->get('cal_start_date');
+  $cal_end_date = $config->get('cal_end_date');
+
+  // Binding the  drupal variable with javascript.
+  
+  $page['#attached']['drupalSettings']['drupal_cal_title'] = $cal_title;
+  $page['#attached']['drupalSettings']['drupal_cal_description'] = $cal_description;
+  $page['#attached']['drupalSettings']['drupal_cal_start_date'] = $cal_start_date;
+  $page['#attached']['drupalSettings']['drupal_cal_end_date'] = $cal_end_date;
+  // $page['#attached']['drupalSettings']['drupal_status'] = $status
+}
+}
+
+
+/**
+ * Implements hook_help().
+ */
+
+function jscal_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the jscal module.
+    case 'help.page.jscal':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('JS Calendar') . '</p>';
+      return $output;
+
+    default:
+  }
+}
